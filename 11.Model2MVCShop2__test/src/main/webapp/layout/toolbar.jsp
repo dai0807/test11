@@ -106,7 +106,20 @@
 		 $(function() {
 			//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
 		 	$("a:contains('로그아웃')").on("click" , function() {
-				$(self.location).attr("href","/user/logout");
+		 		if( ${sessionScope.user.check_K =='K' }   ){
+		 			
+		 			 console.log(" 카카오 로그아웃 !! " ) ;
+
+					$(self.location).attr("href","https://kauth.kakao.com/oauth/logout?client_id=f0b36852932e865ae00c9ff2fcd19874&logout_redirect_uri=http://localhost:8080/user/logout");
+ 					
+					
+		 			///oauth/logout?client_id=${REST_API_KEY}&logout_redirect_uri=${LOGOUT_REDIRECT_URI}
+		 		}else{
+		 			
+		 			
+					$(self.location).attr("href","/user/logout");
+
+		 		}
 				//self.location = "/user/logout"
 			}); 
 		 });

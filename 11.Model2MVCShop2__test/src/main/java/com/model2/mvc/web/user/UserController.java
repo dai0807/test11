@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.model2.mvc.common.Page;
 import com.model2.mvc.common.Search;
@@ -42,13 +43,57 @@ public class UserController {
 	@Value("#{commonProperties['pageSize']}")
 	int pageSize;
 	
-	@RequestMapping(value="/kakaoLogin", method=RequestMethod.GET)
-	public String kakaoLogin(@RequestParam(value = "code", required = false) String code) throws Exception {
-		System.out.println("#########" + code);
+	
+	
+	@RequestMapping(value="/kakaoaddUser", method=RequestMethod.POST)
+//	public String kakaoaddUser(@RequestParam(value = "code", required = false) String code , Model model , @ModelAttribute("user") User user ) throws Exception {
+	public String kakaoaddUser(@RequestParam(value = "code", required = false) String code , Model model , @ModelAttribute("user") User kuser , HttpSession session )throws Exception {
+
+	System.out.println("#########" + code);
 		
+	
+		System.out.println("kakao");
+		System.out.println(kuser);
+		kuser.setPassword("12345") ; //  패스워드 고정 
+		kuser.setCheck_K("K") ; // 카카오는 K로 고정 , 자사는 H 로 고정 
+
+		System.out.println("pw 값 고정 "+kuser);
+
+		
+		System.out.println("회원가입이 완료 되었습니다. ");
+		
+		
+		
+		
+		
+			userService.addUser(kuser);
+		
+		
+		
+			session.setAttribute("user", kuser );
+
+		
+ 
+ 				
+		
+ 				return "redirect:/index.jsp";
+ 				
+ 				
+ 				
+    	}
+	
+	
+	
+	
+	
+	
+	@RequestMapping(value="/kakaoLogin", method=RequestMethod.GET)
+	public String kakaoLogin(@RequestParam(value = "code", required = false) String code , Model model  ,  HttpSession session ) throws Exception {
+		System.out.println("#########" + code);
+		// 카카오 CODㄷ 받기 
 		
 		//		String access_Token = kakao.getAccessToken(code);
-		String access_Token = userService.getAccessToken(code);
+		String access_Token = userService.getAccessToken(code); // 여기서 getAccessToken 토큰을 받아 온다. 
 		System.out.println("###access_Token#### : " + access_Token);
 		
 		
@@ -57,10 +102,30 @@ public class UserController {
 				HashMap<String, Object> userInfo = userService.getUserInfo(access_Token);
 				System.out.println("###access_Token#### : " + access_Token);
  				System.out.println("###email#### : " + userInfo.get("email"));
+ 				String kakaouserId =  (String) userInfo.get("email");
 		        
 		
+ 				if(   	userService.checkDuplication(kakaouserId) == true ) {  // 존재 x
+ 					model.addAttribute("kakaouserId",kakaouserId);
+ 					
+ 					
+ 					return "/user/kakaoAdd.jsp";
+
+ 					
+ 					
+ 				}else {
+ 					
+ 					User user = userService.getUser(kakaouserId);
+ 					// Model 과 View 연결
+ 					session.setAttribute("user", user );
+ 					
+ 				} // 존재 할때 
+  				
+ 				
+ 				
+ 				
 		
-		return "redirect:/user/addUserView.jsp";
+ 				return "redirect:/index.jsp";
 		/*
 		 * 리턴값의 testPage는 아무 페이지로 대체해도 괜찮습니다.
 		 * 없는 페이지를 넣어도 무방합니다.
@@ -82,6 +147,7 @@ public class UserController {
 
 		System.out.println("/user/addUser : POST");
 		//Business Logic
+		user.setCheck_K("H") ;
 		userService.addUser(user);
 		
 		return "redirect:/user/loginView.jsp";

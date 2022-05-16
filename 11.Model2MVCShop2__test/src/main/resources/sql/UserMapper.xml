@@ -16,21 +16,38 @@
 		<result property="phone" 			column="cell_phone" 		jdbcType="VARCHAR" />
 		<result property="addr" 				column="addr" 					jdbcType="VARCHAR" />
 		<result property="email" 			column="email" 				jdbcType="NUMERIC"  />
+		<result property="check_K" 			column="CHECK_K" 		jdbcType="VARCHAR" />
+
 		<result property="regDate" 		column="reg_date" 			jdbcType="DATE" />
 	</resultMap>
 	
 	<!-- SQL : INSERT -->
 	<insert 	id="addUser"		parameterType="user" >
 	 	INSERT
-		INTO users( user_id , user_name , password , role , ssn, cell_phone, addr, email , reg_date) 
+		INTO users( user_id , user_name , password , role , ssn, cell_phone, addr, email , reg_date ,CHECK_K) 
 		VALUES	 (	#{userId} , #{userName} , #{password} , 'user' , #{ssn:VARCHAR} , 
-							#{phone:VARCHAR} , #{addr:VARCHAR} , #{email:VARCHAR} , SYSDATE )
+							#{phone:VARCHAR} , #{addr:VARCHAR} , #{email:VARCHAR} , SYSDATE , #{check_K})
 	 </insert>
+	 
+	 
+	 
+	 	<insert 	id="addKUser"		parameterType="user" >
+	 	INSERT
+		INTO users( user_id , user_name , password , role , ssn, cell_phone, addr, email , reg_date ,CHECK_K) 
+		VALUES	 (	#{userId} , #{userName} , #{password} , 'user' , #{ssn:VARCHAR} , 
+							#{phone:VARCHAR} , #{addr:VARCHAR} , #{email:VARCHAR} , SYSDATE , 'K')
+	 </insert>
+	 
+	 
+	 
+	 
+	 
+	 
 	 
 	 <!-- SQL : SELECT ONE -->
 	 <select 	id="getUser"	parameterType="string"	resultMap="userSelectMap">
 		SELECT
-		user_id , user_name , password , role ,  cell_phone ,  addr , email , reg_date 		
+		user_id , user_name , password , role ,  cell_phone ,  addr , email , reg_date 	,CHECK_K	
 		FROM users 
 		WHERE user_id = #{value}
 	 </select>

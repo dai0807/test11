@@ -144,6 +144,7 @@ public class UserServiceImpl implements UserService{
 		User user=userDao.getUser(userId);
 		if(user != null) {
 			result=false;
+			System.out.println(result);
 		}
 		return result;
 	}

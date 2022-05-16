@@ -15,6 +15,8 @@ public class User {
 	private String phone;
 	private String addr;
 	private String email;
+	private String check_K;
+
 	private Date regDate;
 	/////////////// EL 적용 위해 추가된 Field ///////////
 	private String phone1;
@@ -116,7 +118,7 @@ public class User {
 	@Override
 	public String toString() {
 		return "UserVO : [userId] "+userId+" [userName] "+userName+" [password] "+password+" [role] "+ role
-			+" [ssn] "+ssn+" [phone] "+phone+" [email] "+email+" [regDate] "+regDate;
+			+" [ssn] "+ssn+" [phone] "+phone+" [email] "+email+" [regDate] "+regDate +"[check_k]"+ check_K;
 	}
 	
 	////////////////////////////////////////////////////////////////////////////////////////
@@ -142,4 +144,15 @@ public class User {
 	public void setRegDateString(String regDateString) {
 		this.regDateString = regDateString;
 	}
+
+	public String getCheck_K() {
+		return check_K;
+	}
+
+	public void setCheck_K(String check_K) {
+		this.check_K = check_K;
+	}
+	
+	
+	
 }
