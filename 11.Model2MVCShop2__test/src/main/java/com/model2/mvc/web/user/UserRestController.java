@@ -101,7 +101,9 @@ public class UserRestController {
  					System.out.println("세션 있어");
 					System.out.println("  세션 ddd어 "  +  request.getSession(true).getAttribute("userAuth")  );
 
-					String sessionP = request.getSession(true).getAttribute("userAuth").toString() ;
+					String sessionP = request.getSession(true).getAttribute("userAuth").toString() ;  //  이건 됨 
+					String sessionP1 = (String )request.getSession(true).getAttribute("userAuth")  ;  //  이건  터짐 
+
 					System.out.println("3333");
 					System.out.println("  세션 있어 "  + sessionP);
 					System.out.println("userPhoneNumber  :  " + userPhoneNumber  +"  smsCertification :  " +  smsCertification + " sessionP :" + sessionP );
