@@ -166,7 +166,7 @@ https://1-7171771.tistory.com/141
 				 alert("인증번호 발송이 완료되었습니다.\n휴대폰에서 인증번호 확인을 해주십시오."); 
 					var phone = $("#phone").val();
 					 $.ajax({ 
-						 type:"GET", url:"uphoneCheck?phone=" + phone,  
+						 type:"GET", url:"/user/uphoneCheck?phone=" + phone,  
 								 success:function(data){ 
 									 if(data == "error"){
 
@@ -184,7 +184,7 @@ https://1-7171771.tistory.com/141
 							$(".successPhoneChk").text("인증번호를 입력한 뒤 본인인증을 눌러주십시오.");
 							 $(".successPhoneChk").css("color","green"); 
 							$("#phone").attr("readonly",true); 
-							console.log("이거뭐야 data "  + data)
+							console.log(" 인증번호  data "  + data)
 							code2 = data;
 					 } 
 					} 
@@ -194,19 +194,26 @@ https://1-7171771.tistory.com/141
 				 
 			});
 			
+			});		
+		 $(function() {	
 			 
-	  $("#phoneChk2").on("click" , function() {
+	  $("#phoneChk2.doubleChk3").on("click" , function() {
 		  
-		  
-		  
+		  var phone = $("#phone").val()
+		  var phone2 = $("#phone2").val()
+		  		  console.log("phone :"  +phone)
+		  		  console.log("phone2 :"  +phone2)
+
+		  console.log("체크체크까ㅣㅈ 옴 ")
 		  
 			 $.ajax({ 
-				 type:"GET", url:"smsCertificationRequest?phone1="+ code2+"&phone2"+phone2 ,
+				 type:"GET", url:"/user/smsCertificationRequest?phone="+phone+"&phone2="+phone2 ,
 						 success:function(data){ 
 							 if(data == "error"){
 								 alert("유효하지 않습니다. .")  
 								 }else if(data == "F"){
-						 
+										console.log("   data "  + data) 
+
 									 $(".successPhoneChk").text("인증번호가 일치하지 않습니다. 확인해주시기 바랍니다."); 
 									 $("#phoneDoubleChk").val("false");
 									 $(this).attr("autofocus",true); 
@@ -216,8 +223,8 @@ https://1-7171771.tistory.com/141
 					
 										
 								 } else{
-									 
-									 $(".successPhoneChk").text("인증번호가 일치합니다.");
+										console.log("   data "  + data) 
+									 $(".successPhoneChk").text("인증번호가 일치합니다.!!1");
 									 $(".successPhoneChk").css("color","green");
 									 $("#phoneDoubleChk").val("true"); 
 									 $("#phone2").attr("disabled",true);
@@ -228,34 +235,20 @@ https://1-7171771.tistory.com/141
 									 
 								 }
 							 
-							 
-					} 
-			});
+											 
+							} 
+						});
 			 
 			 
 			 
-			 //날리기
-				 if($("#phone2").val() == code2){
-					 alert("인증 번호 확인 중입니다. "); 
-
-					 $(".successPhoneChk").text("인증번호가 일치합니다.");
-					 $(".successPhoneChk").css("color","green");
-					 $("#phoneDoubleChk").val("true"); 
-					 $("#phone2").attr("disabled",true); 
-					 }else{
-						 $(".successPhoneChk").text("인증번호가 일치하지 않습니다. 확인해주시기 바랍니다."); 
-						 $(".successPhoneChk").css("color","red"); 
-						 $("#phoneDoubleChk").val("false");
-						 $(this).attr("autofocus",true); 
-						 }
-				});
-
+		
 			 
 			 
-		});	
+				});	
 
 		
-		
+	 });	
+	
 		
 	
 
@@ -366,8 +359,12 @@ https://1-7171771.tistory.com/141
 		   
 		  <!--  <button id="phoneChk" class="doubleChk"  > 인증번호 보내    </button> <br/>--> 
 		 <span id="phoneChk" class="doubleChk">인증번호 보내기</span><br/>   
-		   <input id="phone2" type="text" name="phone2" title="인증번호 입력" disabled required/> 
-		   <span id="phoneChk2" class="doubleChk">본인인증</span>  <br/>
+		   <input id="phone2" type="text" name="CertificationNumber" title="인증번호 입력" disabled required/> 
+		   
+		   
+		 <!--  <button id="phoneChk2" class="doubleChk"  > 본인인증   </button> <br/> -->
+		   
+		   <span id="phoneChk2" class="doubleChk3">본인인증</span>  <br/>  
 		   <span class="point successPhoneChk">휴대폰 번호 입력후 인증번호 보내기를 해주십시오.</span>  
 		   <input type="hidden" id="phoneDoubleChk"/> </p> <p class="tip"> 최초 가입 시에만 사용하고 있습니다. 따로 저장되지 않습니다.(번호만 입력해주세요.)
 		    </p> 

@@ -1,5 +1,7 @@
 package com.model2.mvc.web.user;
 
+import java.util.Enumeration;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -64,11 +66,19 @@ public class UserRestController {
 		// 휴대폰 문자보내기
 		int randomNumber = (int)((Math.random()* (9999 - 1000 + 1)) + 1000);
 		//난수 생성 
+		System.out.println("  randomNumber"  + randomNumber );
 		userService.certifiedPhoneNumber(userPhoneNumber,randomNumber);
-		 session.setAttribute("phone", randomNumber);
-		 session.setMaxInactiveInterval(180); //180 초
+		 session.setAttribute("userAuth", randomNumber);
+		// session.setMaxInactiveInterval(180); //180 초
 		 
+		 
+		 System.out.println(  session.getAttribute("userAuth")     );
 		System.out.println("^_^문자 갔어 !! ^_^ ");
+		System.out.println("문자 가는거 끝!!! ");
+		System.out.println("문자 가는거 끝!!! ");
+		System.out.println( );
+
+		
 		return Integer.toString(randomNumber); 
 
 	}
@@ -76,28 +86,45 @@ public class UserRestController {
 
 	@RequestMapping(value = "/smsCertificationRequest", method = RequestMethod.GET) 
 	@ResponseBody 
-	public String smsCertificationRequest  (@RequestParam("phone1") String userPhoneNumber ,  @RequestParam("phone2") String smsCertification ,  HttpSession session   ,HttpServletRequest request)  throws Exception { 
+	public String smsCertificationRequest  (@RequestParam("phone") String userPhoneNumber ,  @RequestParam("phone2") String smsCertification ,  HttpSession session   ,HttpServletRequest request)  throws Exception { 
 		
-		String returnNumber ="" ;
+		System.out.println("인증하러옴 !! ");
+	 // userPhoneNumber 본인 인증한 휴대폰 번호 값 
 		
-		if( request.getSession(true).getAttribute("phone") != null ) {
-			
-			
-			String sessionP = (String)request.getSession(true).getAttribute("phone") ;
-			if   (      sessionP.equals(smsCertification)             ) {
-				
-				
+		String result = "F" ;
+		System.out.println("userPhoneNumber  :  " + userPhoneNumber  +"  smsCertification :  " +  smsCertification );
+		System.out.println("session.getAttributeNames();" + session.getAttributeNames()     );
+		
+ 		
+		
+				if( request.getSession(true).getAttribute("userAuth") != null ) {
+ 					System.out.println("세션 있어");
+					System.out.println("  세션 ddd어 "  +  request.getSession(true).getAttribute("userAuth")  );
+
+					String sessionP = request.getSession(true).getAttribute("userAuth").toString() ;
+					System.out.println("3333");
+					System.out.println("  세션 있어 "  + sessionP);
+					System.out.println("userPhoneNumber  :  " + userPhoneNumber  +"  smsCertification :  " +  smsCertification + " sessionP :" + sessionP );
+
+					System.out.println("sessionP : " + sessionP );
+						if   (      sessionP.equals(smsCertification)             ) {
+							result = "T" ;
+							
+							}else {
+								System.out.println("값들 일치 xxxxx ");
+							}
+						
+						
+		
+					
+					
+				}else {
+					System.out.println(" 세션 없어 ");
+					
 				}
 				
 				
-
-			
-			
-			
-		}else {
-			
-		}
-		String sessionId=((User)session.getAttribute("user")).getUserId();
+				System.out.println("Result " + result);
 
 		
 //		// 휴대폰 문자보내기
@@ -105,12 +132,11 @@ public class UserRestController {
 //		
 //		int randomNumber = (int)((Math.random()* (9999 - 1000 + 1)) + 1000);
 //		//난수 생성 
-//		userService.certifiedPhoneNumber(userPhoneNumber,randomNumber);
 //		 session.setAttribute("phone", randomNumber);
 //		 session.setMaxInactiveInterval(180); //180 초
 //		 
-		System.out.println("^_^문자 갔어 !! ^_^ ");
-	 return Integer.toString(randomNumber); 
+		System.out.println("문자 검증 중  ");
+	 return  result ; 
 
 	}
 	
