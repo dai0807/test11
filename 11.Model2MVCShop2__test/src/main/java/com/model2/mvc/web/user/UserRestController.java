@@ -1,6 +1,8 @@
 package com.model2.mvc.web.user;
 
 import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -33,6 +35,30 @@ public class UserRestController {
 	public UserRestController(){
 		System.out.println(this.getClass());
 	}
+	
+	
+	
+	
+	@RequestMapping( value="/checkDuplication", method=RequestMethod.GET )
+	public boolean  checkDuplication_JsonSimpe( @RequestParam User user  ) throws Exception {
+	//아직  checkDuplication 없음 
+		
+		System.out.println("/user/checkDuplication : POST");
+		boolean result=userService.checkDuplication(user.getUserId());
+		
+		System.out.println("::::"+ user.getUserId() + "  의  checkDuplication 값은      " + result  );
+		
+		Map <String,Object>  map = new HashMap<>();
+		
+		map.put("userId",user.getUserId()) ;
+		map.put("result",result) ;
+		
+		 return false ;
+	}
+	
+	
+	
+	
 	
 	@RequestMapping( value="json/getUser/{userId}", method=RequestMethod.GET )
 	public User getUser( @PathVariable String userId ) throws Exception{
@@ -141,6 +167,9 @@ public class UserRestController {
 	 return  result ; 
 
 	}
+	
+	
+	
 	
 }
 	
